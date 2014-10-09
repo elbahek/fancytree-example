@@ -45,10 +45,29 @@ $(function() {
             }
         },
 
-        extensions: ['table', 'edit'],
+        extensions: ['table', 'edit', 'dnd'],
 
         table: {
             nodeColumnIdx: 0
+        },
+
+        dnd: {
+            autoExpandMS: 400,
+            focusOnClick: true,
+            preventVoidMoves: true,
+            preventRecursiveMoves: true,
+            dragStart: function(node, data) {
+                return true;
+            },
+            dragEnter: function(node, data) {
+                if (node.parent.parent === null && data.otherNode.parent.parent !== null) {
+                    return false;
+                }
+                return true;
+            },
+            dragDrop: function(node, data) {
+                data.otherNode.moveTo(node, data.hitMode);
+            }
         },
 
         renderColumns: function(event, data) {
